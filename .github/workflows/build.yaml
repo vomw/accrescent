@@ -19,4 +19,11 @@ jobs:
           cache: gradle
       - uses: gradle/actions/setup-gradle@0723195856401067f7a2779048b490ace7a47d7c # v5.0.2
       - name: Build with Gradle
+        id: build
         run: ./gradlew build
+      - name: Find APK
+        if: steps.build.outcome == 'success'
+        id: find_apk
+        run: |
+          git status
+          find . -iname *.apk
