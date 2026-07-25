@@ -32,14 +32,14 @@ jobs:
       - uses: gradle/actions/setup-gradle@0723195856401067f7a2779048b490ace7a47d7c # v5.0.2
       - name: Build with Gradle
         id: build
-        run: ./gradlew build
+        run: ./gradlew assembleRelease
 
       - name: Find APK
         if: steps.build.outcome == 'success'
         id: find_apk
         run: |
           git status
-          find . -iname *.apk
+          find app/build/outputs/apk/release -iname "*.apk"
 
       - name: Extract Build Information
         id: build_info
@@ -53,4 +53,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.build_info.outputs.package_id }}-${{ steps.build_info.outputs.version_name }}
-          path: app/build/outputs/apk
+          path: app/build/outputs/apk/release/*.apk
